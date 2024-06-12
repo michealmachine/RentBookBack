@@ -1,0 +1,23 @@
+server:
+  port: 2000
+spring:
+  application:
+    name: gateway
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+
+#      routes:
+#        - id: userService
+#          uri: lb://userService
+#          predicates:
+#            - Path=/userService/loginCheck
+#        - id: userServiceProtected
+#          uri: lb://userService
+#          predicates:
+#            - Path=/userService/**
+#          filters:
+#            - AuthFilter

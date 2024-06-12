@@ -1,0 +1,18 @@
+spring:
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+  datasource:
+    url: jdbc:mysql://localhost:3306/target
+    username: root
+    password: Zzq664450274
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  application:
+    name: bookManageService
+server:
+  port: 8090

@@ -1,0 +1,51 @@
+spring:
+  rabbitmq:
+    host: 8.130.79.83
+    port: 5672
+    username: MdPsycho
+    password: Zzq664450274
+    virtual-host: /test
+  datasource:
+    url: jdbc:mysql://localhost:3306/target?useSSL=false&serverTimezone=UTC
+    username: root
+    password: Zzq664450274
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  mail:
+    # 163邮箱的地址为smtp.163.com，直接填写即可
+    host: smtp.163.com
+    # 你申请的163邮箱
+    username: madpsycho@163.com
+    # 注意密码是在开启smtp/pop3时自动生成的，记得保存一下，不然就找不到了
+    password: PFVIMQPDCKMNWZHI
+  cloud:
+    function:
+      definition: consumer
+    consul:
+      host: localhost
+      port: 8500
+    stream:
+      binders: #此处配置要绑定的rabbitmq的服务信息
+        local-server: #绑定名称，随便起一个就行
+          type: rabbit #消息组件类型，这里使用的是RabbitMQ，就填写rabbit
+          environment: #服务器相关信息，按照下面的方式填写就行，爆红别管
+#            spring:
+#              rabbitmq:
+#                host: localhost
+#                port: 5672
+#                username: MaPsycho
+#                password: Zzq664450274
+#                virtual-host: /test
+            spring:
+              rabbitmq:
+                host: 8.130.79.83
+                port: 5672
+                username: MdPsycho
+                password: Zzq664450274
+                virtual-host: /test
+      bindings:
+        consumer-in-0:
+          destination: email
+  application:
+    name: emailService
+server:
+  port: 8098

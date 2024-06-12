@@ -1,0 +1,78 @@
+spring:
+  rabbitmq:
+    host: 8.130.79.83
+    port: 5672
+    username: MdPsycho
+    password: Zzq664450274
+    virtual-host: /test
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+    stream:
+      binders: #此处配置要绑定的rabbitmq的服务信息
+        local-server: #绑定名称，随便起一个就行
+          type: rabbit #消息组件类型，这里使用的是RabbitMQ，就填写rabbit
+          environment: #服务器相关信息，按照下面的方式填写就行，爆红别管
+#            spring:
+#              rabbitmq:
+#                host: localhost
+#                port: 5672
+#                username: MaPsycho
+#                password: Zzq664450274
+#                virtual-host: /test
+            spring:
+              rabbitmq:
+                host: 8.130.79.83
+                port: 5672
+                username: MdPsycho
+                password: Zzq664450274
+                virtual-host: /test
+      bindings:
+        send-email:
+          destination: email
+  application:
+    name: essentialService
+server:
+  port: 8089
+resilience4j:
+  retry:
+    instances:
+      retryApi:
+        maxAttempts: 2 # 最大重试次数
+        waitDuration: 1000 # 重试间隔时间（毫秒）
+resilience4j.circuitbreaker:
+  instances:
+    backendA:
+      registerHealthIndicator: true # 注册健康指示器
+      slidingWindowSize: 5 # 滑动窗口大小
+      minimumNumberOfCalls: 1 # 最小调用次数，用于计算失败率
+      permittedNumberOfCallsInHalfOpenState: 2 # 半开状态允许的调用次数
+      waitDurationInOpenState: 60s # 开启状态持续时间（毫秒）
+      failureRateThreshold: 50 # 失败率阈值（百分比）
+      eventConsumerBufferSize: 10 # 事件缓冲区大小
+resilience4j.ratelimiter:
+  instances:
+    backendA:
+      limitForPeriod: 2 # 在一个周期内的请求限制数
+      limitRefreshPeriod: 6s # 限制刷新周期（毫秒）
+      timeoutDuration: 0 # 请求等待获取权限的超时时间（毫秒）
+    backendB:
+      limitForPeriod: 1 # 在一个周期内的请求限制数
+      limitRefreshPeriod: 6000 # 限制刷新周期（毫秒）
+      timeoutDuration: 0 # 请求等待获取权限的超时时间（毫秒）
+management:
+  health:
+    readinessstate:
+      enabled: true
+    circuitbreakers:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health,info,beans,env,metrics,management
+
+
